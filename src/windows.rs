@@ -279,3 +279,35 @@ pub fn set_current_thread_ideal_processor(
 ) -> Result<IdealProcessor, Error> {
     set_thread_ideal_processor(thread_native_id(), ideal_processor)
 }
+
+/// Windows-specific complemented part of the [`crate::ThreadExt`] trait.
+pub trait ThreadExt {
+    /// Returns current thread's priority.
+    /// For more info see [`thread_priority`].
+    fn get_priority(&self) -> Result<ThreadPriority, Error> {
+        thread_priority()
+    }
+
+    /// Sets current thread's priority.
+    /// For more info see [`set_current_thread_priority`].
+    fn set_priority(&self, priority: ThreadPriority) -> Result<(), Error> {
+        set_current_thread_priority(priority)
+    }
+
+    /// Returns current thread's windows id.
+    /// For more info see [`thread_native_id`].
+    fn get_native_id(&self) -> ThreadId {
+        thread_native_id()
+    }
+    /// Sets current thread's ideal processor.
+    /// For more info see [`set_current_thread_ideal_processor`].
+    fn set_ideal_processor(&self, ideal_processor: IdealProcessor) -> Result<IdealProcessor, Error> {
+        set_current_thread_ideal_processor(ideal_processor)
+    }
+
+    /// Sets current thread's priority boost.
+    /// For more info see [`set_current_thread_priority_boost`].
+    fn set_priority_boost(&self, enabled: bool) -> Result<(), Error> {
+        set_current_thread_priority_boost(enabled)
+    }
+}

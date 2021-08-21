@@ -85,3 +85,29 @@ impl Thread {
         })
     }
 }
+
+/// A helper trait for other threads to implement to be able to call methods
+/// on threads themselves.
+pub trait ThreadExt {
+    /// Sets the current thread's priority.
+    /// For more info see [`ThreadPriority::set_for_current`].
+    fn set_priority(&self, priority: ThreadPriority) -> Result<(), Error> {
+        priority.set_for_current()
+    }
+}
+
+impl ThreadExt for Thread {
+
+}
+
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn test_threadext_impl_for_thread() {
+        use thread_priority::ThreadExt;
+        use std::thread::Thread;
+
+        let thread = std::thread::current();
+    }
+}

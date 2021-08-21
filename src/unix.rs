@@ -279,6 +279,39 @@ pub fn thread_priority() -> Result<ThreadPriority, Error> {
     ))
 }
 
+/// Unix-specific complemented part of the [`crate::ThreadExt`] trait.
+pub trait ThreadExt {
+    /// Gets the current thread's priority.
+    /// For more info read [`thread_priority`].
+    fn get_priority(&self) -> Result<ThreadPriority, Error> {
+        thread_priority()
+    }
+
+    /// Gets the current thread's schedule policy.
+    /// For more info read [`thread_schedule_policy`].
+    fn get_schedule_policy(&self) -> Result<ThreadSchedulePolicy, Error> {
+        thread_schedule_policy()
+    }
+
+    /// Returns current thread's schedule policy and parameters.
+    /// For more info read [`thread_schedule_policy_param`].
+    fn get_schedule_policy_param(&self) -> Result<(ThreadSchedulePolicy, ScheduleParams), Error> {
+        thread_schedule_policy_param(thread_native_id())
+    }
+
+    /// Sets current thread's schedule policy.
+    /// For more info read [`set_thread_schedule_policy`].
+    fn set_schedule_policy(&self, policy: ThreadSchedulePolicy, params: ScheduleParams) -> Result<(), Error> {
+        set_thread_schedule_policy(thread_native_id(), policy, params)
+    }
+
+    /// Returns native unix thread id.
+    /// For more info read [`thread_native_id`].
+    fn get_native_id(&self) -> ThreadId {
+        thread_native_id()
+    }
+}
+
 /// Returns current thread id, which is the current OS's native handle.
 /// It may or may not be equal or even related to rust's thread id,
 /// there is absolutely no guarantee for that.
